@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,7 +17,6 @@ public class EmployeeControllerAdvice {
     @ExceptionHandler(EmployeeNotFoundException.class)
     public ResponseEntity<Object> employeeNotFoundHandler(EmployeeNotFoundException exception) {
         Map<String, Object> body = new HashMap<>();
-        body.put("timestamps", LocalDateTime.now());
         body.put("message", exception.getMessage());
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
