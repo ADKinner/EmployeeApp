@@ -42,7 +42,7 @@ public class EmployeeController {
     public Employee create(@RequestBody Employee employee) {
         logger.info(
                 "Process post request (create employee with params: " +
-                "first_name={}, last_name={}, gender={}, department_id={}, job_title={}, date_of_birth={}",
+                        "first_name={}, last_name={}, gender={}, department_id={}, job_title={}, date_of_birth={}",
                 employee.getFirstName(), employee.getLastName(), employee.getGender().toString(),
                 employee.getDepartmentId(), employee.getJobTitle(), employee.getDateOfBirth().toString()
         );

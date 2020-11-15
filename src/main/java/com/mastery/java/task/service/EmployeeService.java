@@ -2,7 +2,6 @@ package com.mastery.java.task.service;
 
 import com.mastery.java.task.dao.EmployeeDao;
 import com.mastery.java.task.dto.Employee;
-import com.mastery.java.task.exception.EmployeeNotFoundException;
 import com.mastery.java.task.rest.EmployeeController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -24,7 +24,7 @@ public class EmployeeDao {
             logger.info("Get employee with id={}", id);
             return employeeRepository.getByEmployeeId(id);
         } else {
-            logger.warn("Try to get not existing employee with id={}", id);
+            logger.warn("Tried to get not existing employee with id={}", id);
             throw new EmployeeNotFoundException("Could not get employee with id = " + id);
         }
     }
