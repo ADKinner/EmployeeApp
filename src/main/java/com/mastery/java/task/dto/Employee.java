@@ -1,33 +1,44 @@
 package com.mastery.java.task.dto;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
 @Table(schema = "public", name = "employees")
+@ApiModel(description = "Details about employee")
 public class Employee {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @ApiModelProperty(notes = "Unique id of the employee")
     private Long employeeId;
 
     @Column(nullable = false, name = "first_name")
+    @ApiModelProperty(notes = "Employee's name")
     private String firstName;
 
     @Column(nullable = false, name = "last_name")
+    @ApiModelProperty(notes = "Employee's surname")
     private String lastName;
 
     @Column(nullable = false, name = "department_id")
+    @ApiModelProperty(notes = "Id of employee's department")
     private Long departmentId;
 
     @Column(nullable = false, name = "job_title")
+    @ApiModelProperty(notes = "Employee's job title")
     private String jobTitle;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
+    @ApiModelProperty(notes = "Employee's gender")
     private Gender gender;
 
     @Column(nullable = false, name = "date_of_birth")
+    @ApiModelProperty(notes = "Employee's birth date")
     private LocalDate dateOfBirth;
 
     public Employee() {
