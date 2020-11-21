@@ -7,8 +7,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -60,7 +62,7 @@ public class EmployeeController {
             notes = "Provide employee data to add employee in employee base",
             response = Employee.class
     )
-    public Employee create(@RequestBody Employee employee) {
+    public Employee create(@RequestBody @Valid Employee employee) {
         logger.info(
                 "Process post request (create employee with params: " +
                         "first_name={}, last_name={}, gender={}, department_id={}, job_title={}, date_of_birth={}",
@@ -76,7 +78,7 @@ public class EmployeeController {
             notes = "Provide an id and data to update specific employee in employee base",
             response = Employee.class
     )
-    public Employee update(@RequestBody Employee employee, @PathVariable Long id) {
+    public Employee update(@RequestBody @Valid Employee employee, @PathVariable Long id) {
         logger.info(
                 "Process update request (update employee with id={} by params: " +
                         "first_name={}, last_name={}, gender={}, department_id={}, job_title={}, date_of_birth={}",
