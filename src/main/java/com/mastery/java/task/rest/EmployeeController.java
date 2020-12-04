@@ -33,9 +33,9 @@ public class EmployeeController {
     )
     public Employee get(@PathVariable Long id) {
         logger.info("Process get request (get employee by id={})", id);
-        //Employee employee = employeeService.getEmployee(id);
-        jmsTemplate.convertAndSend("employee-get-queue", id.toString());
-        return (Employee) jmsTemplate.receiveAndConvert("employee-get-answers-queue");
+        Employee employee = employeeService.getEmployee(id);
+        jmsTemplate.convertAndSend("employee-message-queue", employee.toString());
+        return employee;
     }
 
     @GetMapping
