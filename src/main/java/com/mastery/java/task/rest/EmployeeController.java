@@ -7,7 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.validation.annotation.Validated;
+import org.springframework.jms.core.JmsTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -22,6 +22,9 @@ public class EmployeeController {
     @Autowired
     private EmployeeService employeeService;
 
+    @Autowired
+    private JmsTemplate jmsTemplate;
+
     @GetMapping("/{id}")
     @ApiOperation(
             value = "Get employee by his id",
@@ -30,7 +33,9 @@ public class EmployeeController {
     )
     public Employee get(@PathVariable Long id) {
         logger.info("Process get request (get employee by id={})", id);
-        return employeeService.getEmployee(id);
+        //Employee employee = employeeService.getEmployee(id);
+        jmsTemplate.convertAndSend("employee-get-queue", id.toString());
+        return (Employee) jmsTemplate.receiveAndConvert("employee-get-answers-queue");
     }
 
     @GetMapping
