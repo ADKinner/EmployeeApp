@@ -34,7 +34,10 @@ public class EmployeeController {
     public Employee get(@PathVariable Long id) {
         logger.info("Process get request (get employee by id={})", id);
         Employee employee = employeeService.getEmployee(id);
-        jmsTemplate.convertAndSend("employee-message-queue", employee.toString());
+        jmsTemplate.convertAndSend(
+                "employee-message-queue",
+                "Get employee: " + employee.toString()
+        );
         return employee;
     }
 
@@ -46,7 +49,12 @@ public class EmployeeController {
     )
     public List<Employee> getAll() {
         logger.info("Process get request (get all employees)");
-        return employeeService.getAllEmployees();
+        List<Employee> employees = employeeService.getAllEmployees();
+        jmsTemplate.convertAndSend(
+                "employee-message-queue",
+                "Get employees: " + employees.stream().toString()
+        );
+        return employees;
     }
 
     @DeleteMapping("/{id}")
@@ -57,6 +65,7 @@ public class EmployeeController {
     )
     public void delete(@PathVariable Long id) {
         logger.info("Process delete request (delete employee by id={})", id);
+        jmsTemplate.convertAndSend("employee-message-queue", "Delete employee with id: " + id);
         employeeService.deleteEmployeeById(id);
     }
 
@@ -74,6 +83,10 @@ public class EmployeeController {
                 employee.getFirstName(), employee.getLastName(), employee.getGender().toString(),
                 employee.getDepartmentId(), employee.getJobTitle(), employee.getDateOfBirth().toString()
         );
+        jmsTemplate.convertAndSend(
+                "employee-message-queue",
+                "Create employee: " + employee.toString()
+        );
         return employeeService.createEmployee(employee);
     }
 
@@ -90,6 +103,10 @@ public class EmployeeController {
                 id,
                 employee.getFirstName(), employee.getLastName(), employee.getGender().toString(),
                 employee.getDepartmentId(), employee.getJobTitle(), employee.getDateOfBirth().toString()
+        );
+        jmsTemplate.convertAndSend(
+                "employee-message-queue",
+                "Update employee with id=" + id + ": " + employee.toString()
         );
         return employeeService.updateEmployee(employee, id);
     }

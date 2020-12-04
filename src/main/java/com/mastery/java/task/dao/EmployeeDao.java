@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Repository
@@ -50,6 +51,7 @@ public class EmployeeDao {
         }
     }
 
+    @Transactional
     public void delete(Long id) {
         logger.info("Delete employee with id={}", id);
         employeeRepository.deleteByEmployeeId(id);
