@@ -1,0 +1,28 @@
+version: '3.7'
+services:
+  db:
+    image: postgres:latest
+    container_name: postgre-sql
+    environment:
+      POSTGRES_DB: employee_db
+      POSTGRES_PASSWORD: 7694
+      POSTGRES_USER: postgres
+    ports:
+      - "5555:5432"
+  message-server:
+    image: symptoma/activemq:latest
+    container_name: activemq-server
+    ports:
+      - "8161:8161"
+      - "61616:61616"
+  webapp:
+    build:
+      context: ./
+      dockerfile: DockerFile
+    image: "employee-base-image:1.1"
+    ports:
+      - "8080:8080"
+    container_name: employee-base-app
+    depends_on:
+      - db
+      - message-server

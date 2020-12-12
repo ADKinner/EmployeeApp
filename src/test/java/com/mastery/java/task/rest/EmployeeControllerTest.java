@@ -1,6 +1,8 @@
 package com.mastery.java.task.rest;
 
+import com.mastery.java.task.activemq.MessageService;
 import com.mastery.java.task.dto.Employee;
+import com.mastery.java.task.dto.Gender;
 import com.mastery.java.task.service.EmployeeService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -9,6 +11,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDate;
+
 @ExtendWith(MockitoExtension.class)
 public class EmployeeControllerTest {
 
@@ -16,6 +20,9 @@ public class EmployeeControllerTest {
 
     @Mock
     private EmployeeService employeeService;
+
+    @Mock
+    private MessageService messageService;
 
     @InjectMocks
     private EmployeeController employeeController;
@@ -35,6 +42,8 @@ public class EmployeeControllerTest {
     @Test
     public void testCreate() {
         Employee employee = Mockito.mock(Employee.class);
+        Mockito.when(employee.getGender()).thenReturn(Gender.MALE);
+        Mockito.when(employee.getDateOfBirth()).thenReturn(LocalDate.now());
         employeeController.create(employee);
         Mockito.verify(employeeService, Mockito.times(1)).createEmployee(employee);
     }
@@ -42,6 +51,8 @@ public class EmployeeControllerTest {
     @Test
     public void testUpdate() {
         Employee employee = Mockito.mock(Employee.class);
+        Mockito.when(employee.getGender()).thenReturn(Gender.MALE);
+        Mockito.when(employee.getDateOfBirth()).thenReturn(LocalDate.now());
         employeeController.update(employee, EMPLOYEE_ID);
         Mockito.verify(employeeService, Mockito.times(1)).updateEmployee(employee, EMPLOYEE_ID);
     }

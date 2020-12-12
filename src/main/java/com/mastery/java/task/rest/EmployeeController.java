@@ -1,5 +1,6 @@
 package com.mastery.java.task.rest;
 
+import com.mastery.java.task.activemq.MessageService;
 import com.mastery.java.task.dto.Employee;
 import com.mastery.java.task.service.EmployeeService;
 import io.swagger.annotations.ApiOperation;
@@ -23,7 +24,7 @@ public class EmployeeController {
     private EmployeeService employeeService;
 
     @Autowired
-    private JmsTemplate jmsTemplate;
+    private MessageService messageService;
 
     @GetMapping("/{id}")
     @ApiOperation(
@@ -33,12 +34,8 @@ public class EmployeeController {
     )
     public Employee get(@PathVariable Long id) {
         logger.info("Process get request (get employee by id={})", id);
-        Employee employee = employeeService.getEmployee(id);
-        jmsTemplate.convertAndSend(
-                "employee-message-queue",
-                "Get employee: " + employee.toString()
-        );
-        return employee;
+        messageService.sendMessage("Get employee by his id: " + id);
+        return employeeService.getEmployee(id);
     }
 
     @GetMapping
@@ -49,12 +46,8 @@ public class EmployeeController {
     )
     public List<Employee> getAll() {
         logger.info("Process get request (get all employees)");
-        List<Employee> employees = employeeService.getAllEmployees();
-        jmsTemplate.convertAndSend(
-                "employee-message-queue",
-                "Get employees: " + employees.stream().toString()
-        );
-        return employees;
+        messageService.sendMessage("Get employees");
+        return employeeService.getAllEmployees();
     }
 
     @DeleteMapping("/{id}")
@@ -65,7 +58,7 @@ public class EmployeeController {
     )
     public void delete(@PathVariable Long id) {
         logger.info("Process delete request (delete employee by id={})", id);
-        jmsTemplate.convertAndSend("employee-message-queue", "Delete employee with id: " + id);
+        messageService.sendMessage("Delete employee with id: " + id);
         employeeService.deleteEmployeeById(id);
     }
 
@@ -83,10 +76,7 @@ public class EmployeeController {
                 employee.getFirstName(), employee.getLastName(), employee.getGender().toString(),
                 employee.getDepartmentId(), employee.getJobTitle(), employee.getDateOfBirth().toString()
         );
-        jmsTemplate.convertAndSend(
-                "employee-message-queue",
-                "Create employee: " + employee.toString()
-        );
+        messageService.sendMessage("Create employee: " + employee.toString());
         return employeeService.createEmployee(employee);
     }
 
@@ -104,10 +94,7 @@ public class EmployeeController {
                 employee.getFirstName(), employee.getLastName(), employee.getGender().toString(),
                 employee.getDepartmentId(), employee.getJobTitle(), employee.getDateOfBirth().toString()
         );
-        jmsTemplate.convertAndSend(
-                "employee-message-queue",
-                "Update employee with id=" + id + ": " + employee.toString()
-        );
+        messageService.sendMessage("Update employee with id=" + id + ": " + employee.toString());
         return employeeService.updateEmployee(employee, id);
     }
 }

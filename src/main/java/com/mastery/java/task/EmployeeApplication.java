@@ -16,7 +16,7 @@ import java.util.Collections;
 
 @SpringBootApplication
 @EnableSwagger2
-@EnableJms
+//@EnableJms
 public class EmployeeApplication {
 
     public static void main(String[] args) {
