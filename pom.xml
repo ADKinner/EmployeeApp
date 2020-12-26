@@ -25,6 +25,7 @@
 		<mockito.version>3.5.13</mockito.version>
 		<springfox.boot.version>3.0.0</springfox.boot.version>
 		<springboot.maven.plugin.version>2.3.4.RELEASE</springboot.maven.plugin.version>
+		<jbehave.version>4.8.1</jbehave.version>
 	</properties>
 
 	<dependencies>
@@ -112,11 +113,24 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-activemq</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<dependency>
 			<groupId>org.flywaydb</groupId>
 			<artifactId>flyway-core</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.jbehave</groupId>
+			<artifactId>jbehave-core</artifactId>
+			<version>4.8.1</version>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 

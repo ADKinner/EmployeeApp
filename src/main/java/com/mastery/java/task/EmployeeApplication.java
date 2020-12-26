@@ -16,7 +16,7 @@ import java.util.Collections;
 
 @SpringBootApplication
 @EnableSwagger2
-//@EnableJms
+@EnableJms
 public class EmployeeApplication {
 
     public static void main(String[] args) {
@@ -38,7 +38,7 @@ public class EmployeeApplication {
                 "Employee Base API",
                 "API for internship task",
                 "1.0",
-                "Free to use",
+                "https://vk.com/dimakugach",
                 new Contact("Dzmitry Kuhach", "https://vk.com/dimakugach", "dkaezi@gmail.com"),
                 "API License",
                 "https://vk.com/dimakugach",

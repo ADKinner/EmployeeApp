@@ -42,7 +42,8 @@ public class EmployeeController {
     @ApiOperation(
             value = "Get all employees",
             notes = "Provides nothing to look up all employees from employee base",
-            response = Employee.class
+            response = Employee.class,
+            responseContainer = "List"
     )
     public List<Employee> getAll() {
         logger.info("Process get request (get all employees)");
