@@ -13,8 +13,8 @@ services:
     image: symptoma/activemq:latest
     container_name: activemq-server
     ports:
-      - "8161:8161"
-      - "61616:61616"
+      - "192.168.99.100:8161:8161"
+      - "192.168.99.100:61616:61616"
   webapp:
     build:
       context: ./
