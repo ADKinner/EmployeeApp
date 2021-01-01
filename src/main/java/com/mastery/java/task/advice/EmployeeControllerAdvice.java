@@ -23,6 +23,7 @@ public class EmployeeControllerAdvice {
     @ExceptionHandler(EmployeeBaseServiceException.class)
     public ResponseEntity<Object> serviceExceptionHandler(EmployeeBaseServiceException exception) {
         Map<String, Object> body = new HashMap<>();
+        logger.error(exception.getMessage());
         body.put("message", exception.getMessage());
         if (exception.getMessage().contains("update")) {
             return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
@@ -35,6 +36,7 @@ public class EmployeeControllerAdvice {
     @ExceptionHandler({MethodArgumentNotValidException.class})
     public Map<String, Object> methodArgumentNotValidHandler(MethodArgumentNotValidException exception) {
         Map<String, Object> body = new HashMap<>();
+        logger.error(exception.getMessage());
         exception.getBindingResult().getAllErrors().forEach(e -> {
             String fieldName = ((FieldError) e).getField();
             String message = e.getDefaultMessage();
@@ -47,11 +49,9 @@ public class EmployeeControllerAdvice {
     @ExceptionHandler({InvalidFormatException.class})
     public Map<String, Object> methodArgumentNotValidHandler(InvalidFormatException exception) {
         Map<String, Object> body = new HashMap<>();
+        logger.error(exception.getMessage());
         if (exception.getMessage().contains("LocalDate")) {
             body.put("dateOfBirth", "Such date format is invalid, right format is YYYY-MM-DD");
-        }
-        if (exception.getMessage().contains("Gender")) {
-            body.put("gender", "Employee's gender can be MALE or FEMALE");
         }
         return body;
     }
@@ -59,7 +59,7 @@ public class EmployeeControllerAdvice {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler({Exception.class})
     public Map<String, Object> anotherExceptionHandler(Exception exception) {
-        logger.error("Message: " + exception.getMessage() + "\n Cause: " + exception.getCause());
+        logger.error("Message: " + exception.getMessage());
         Map<String, Object> body = new HashMap<>();
         body.put("message", "Server error");
         return body;
