@@ -41,8 +41,12 @@ public class EmployeeService {
     }
 
     public Employee updateEmployee(Employee employee, Long id) {
-        logger.info("Update employee with id={}", employee.getEmployeeId());
+        logger.info("Update employee with id={}", id);
         employee.setEmployeeId(id);
-        return employeeRepository.save(employee);
+        if (employeeRepository.existsById(id)) {
+            return employeeRepository.save(employee);
+        } else {
+            throw new EmployeeBaseServiceException("Could not update no existing employee wit id = " + id);
+        }
     }
 }
