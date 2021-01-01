@@ -1,7 +1,8 @@
 package com.mastery.java.task.service;
 
-import com.mastery.java.task.dao.EmployeeDao;
 import com.mastery.java.task.dto.Employee;
+import com.mastery.java.task.exception.EmployeeBaseServiceException;
+import com.mastery.java.task.repository.EmployeeRepository;
 import com.mastery.java.task.rest.EmployeeController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,31 +17,32 @@ public class EmployeeService {
     private final Logger logger = LoggerFactory.getLogger(EmployeeController.class);
 
     @Autowired
-    private EmployeeDao employeeDao;
+    private EmployeeRepository employeeRepository;
 
     public List<Employee> getAllEmployees() {
-        logger.info("Process getting all employees");
-        return employeeDao.getAll();
+        logger.info("Get all employees");
+        return employeeRepository.findAll();
     }
 
     public void deleteEmployeeById(Long id) {
-        logger.info("Process deleting employee by id={}", id);
-        employeeDao.delete(id);
+        logger.info("Delete employee with id={}", id);
+        employeeRepository.deleteById(id);
     }
 
     public Employee getEmployee(Long id) {
-        logger.info("Process getting employee by id={}", id);
-        return employeeDao.get(id);
+        logger.info("Get employee with id={}", id);
+        return employeeRepository.findById(id)
+                .orElseThrow(() -> new EmployeeBaseServiceException("Could not get employee with id = " + id));
     }
 
     public Employee createEmployee(Employee employee) {
-        logger.info("Process creating employee");
-        return employeeDao.create(employee);
+        logger.info("Create " + employee.toString());
+        return employeeRepository.save(employee);
     }
 
     public Employee updateEmployee(Employee employee, Long id) {
-        logger.info("Process updating employee with id={}", id);
+        logger.info("Update employee with id={}", employee.getEmployeeId());
         employee.setEmployeeId(id);
-        return employeeDao.update(employee);
+        return employeeRepository.save(employee);
     }
 }

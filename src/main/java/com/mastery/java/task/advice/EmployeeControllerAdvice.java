@@ -1,7 +1,7 @@
 package com.mastery.java.task.advice;
 
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
-import com.mastery.java.task.exception.EmployeeNotFoundException;
+import com.mastery.java.task.exception.EmployeeBaseServiceException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -15,8 +15,8 @@ import java.util.Map;
 @RestControllerAdvice
 public class EmployeeControllerAdvice {
 
-    @ExceptionHandler(EmployeeNotFoundException.class)
-    public ResponseEntity<Object> employeeNotFoundHandler(EmployeeNotFoundException exception) {
+    @ExceptionHandler(EmployeeBaseServiceException.class)
+    public ResponseEntity<Object> employeeNotFoundHandler(EmployeeBaseServiceException exception) {
         Map<String, Object> body = new HashMap<>();
         body.put("message", exception.getMessage());
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);

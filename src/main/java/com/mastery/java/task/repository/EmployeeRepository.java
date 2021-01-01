@@ -1,17 +1,11 @@
 package com.mastery.java.task.repository;
 
 import com.mastery.java.task.dto.Employee;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
 
-public interface EmployeeRepository extends JpaRepository<Employee, Long> {
-
-    boolean existsByEmployeeId(Long id);
-
-    Employee getByEmployeeId(Long id);
+public interface EmployeeRepository extends CrudRepository<Employee, Long> {
 
     List<Employee> findAll();
-
-    void deleteByEmployeeId(Long id);
 }
