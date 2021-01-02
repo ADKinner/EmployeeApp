@@ -76,8 +76,7 @@ public class EmployeeController {
                 employee.getFirstName(), employee.getLastName(), employee.getGender().toString(),
                 employee.getDepartmentId(), employee.getJobTitle(), employee.getDateOfBirth().toString()
         );
-        messageService.sendMessage("Create employee: " + employee.toString());
-        return employeeService.createEmployee(employee);
+        return messageService.sendData(employee);
     }
 
     @PutMapping("/{id}")
