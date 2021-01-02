@@ -59,9 +59,9 @@ public class EmployeeControllerAdvice {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler({Exception.class})
     public Map<String, Object> anotherExceptionHandler(Exception exception) {
-        logger.error("Message: " + exception.getMessage());
+        logger.error(exception.getMessage());
         Map<String, Object> body = new HashMap<>();
-        body.put("message", "Server error");
+        body.put("message", "Internal Server Error");
         return body;
     }
 }

@@ -4,6 +4,8 @@ import com.mastery.java.task.activemq.MessageService;
 import com.mastery.java.task.dto.Employee;
 import com.mastery.java.task.service.EmployeeService;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +33,10 @@ public class EmployeeController {
             notes = "Provide an id to look up specific employee from employee base",
             response = Employee.class
     )
+    @ApiResponses({
+            @ApiResponse(code = 404, message = "Not Found"),
+            @ApiResponse(code = 500, message = "Internal Server Error")
+    })
     public Employee get(@PathVariable Long id) {
         logger.info("Process get request (get employee by id={})", id);
         messageService.sendMessage("Get employee by his id: " + id);
@@ -44,6 +50,9 @@ public class EmployeeController {
             response = Employee.class,
             responseContainer = "List"
     )
+    @ApiResponses({
+            @ApiResponse(code = 500, message = "Internal Server Error")
+    })
     public List<Employee> getAll() {
         logger.info("Process get request (get all employees)");
         messageService.sendMessage("Get employees");
@@ -56,6 +65,9 @@ public class EmployeeController {
             notes = "Provide an id to delete specific employee from employee base",
             response = Employee.class
     )
+    @ApiResponses({
+            @ApiResponse(code = 500, message = "Internal Server Error")
+    })
     public void delete(@PathVariable Long id) {
         logger.info("Process delete request (delete employee by id={})", id);
         messageService.sendMessage("Delete employee with id: " + id);
@@ -69,6 +81,10 @@ public class EmployeeController {
             notes = "Provide employee data to add employee in employee base",
             response = Employee.class
     )
+    @ApiResponses({
+            @ApiResponse(code = 400, message = "Bad Request"),
+            @ApiResponse(code = 500, message = "Internal Server Error")
+    })
     public Employee create(@RequestBody @Valid Employee employee) {
         logger.info(
                 "Process post request (create employee with params: " +
@@ -85,6 +101,10 @@ public class EmployeeController {
             notes = "Provide an id and data to update specific employee in employee base",
             response = Employee.class
     )
+    @ApiResponses({
+            @ApiResponse(code = 400, message = "Bad Request"),
+            @ApiResponse(code = 500, message = "Internal Server Error")
+    })
     public Employee update(@RequestBody @Valid Employee employee, @PathVariable Long id) {
         logger.info(
                 "Process update request (update employee with id={} by params: " +
