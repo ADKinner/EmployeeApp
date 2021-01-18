@@ -33,6 +33,11 @@ public class EmployeeControllerSteps extends Steps {
         response = RestAssured.get(url);
     }
 
+    @When("Client perform delete request to Employee Base with id = $id")
+    public void deleteEmployee(int id) {
+        response = RestAssured.delete(url + id);
+    }
+
     @Then("Client get response with status $status")
     public void checkSuccessfulGetEmployee(String status) {
         Assert.assertEquals(response.getStatusCode(), Integer.parseInt(status));

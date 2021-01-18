@@ -32,7 +32,7 @@ public class EmployeeService {
     public Employee getEmployee(Long id) {
         logger.info("Get employee with id={}", id);
         return employeeRepository.findById(id)
-                .orElseThrow(() -> new EmployeeBaseServiceException("Could not get employee with id = " + id));
+                .orElseThrow(() -> new EmployeeBaseServiceException("Employee Not Found"));
     }
 
     public Employee createEmployee(Employee employee) {
@@ -46,7 +46,7 @@ public class EmployeeService {
         if (employeeRepository.existsById(id)) {
             return employeeRepository.save(employee);
         } else {
-            throw new EmployeeBaseServiceException("Could not update no existing employee wit id = " + id);
+            throw new EmployeeBaseServiceException("Employee Not Found To Update");
         }
     }
 }

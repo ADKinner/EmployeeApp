@@ -10,11 +10,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
 
+@Validated
 @RestController
 @RequestMapping("/employees")
 public class EmployeeController {
@@ -34,10 +37,11 @@ public class EmployeeController {
             response = Employee.class
     )
     @ApiResponses({
-            @ApiResponse(code = 404, message = "Not Found"),
+            @ApiResponse(code = 400, message = "Bad Request"),
+            @ApiResponse(code = 404, message = "Employee Not Found"),
             @ApiResponse(code = 500, message = "Internal Server Error")
     })
-    public Employee get(@PathVariable Long id) {
+    public Employee get(@PathVariable @Valid @PositiveOrZero Long id) {
         logger.info("Process get request (get employee by id={})", id);
         messageService.sendMessage("Get employee by his id: " + id);
         return employeeService.getEmployee(id);
@@ -66,9 +70,10 @@ public class EmployeeController {
             response = Employee.class
     )
     @ApiResponses({
+            @ApiResponse(code = 400, message = "Bad Request"),
             @ApiResponse(code = 500, message = "Internal Server Error")
     })
-    public void delete(@PathVariable Long id) {
+    public void delete(@PathVariable @PositiveOrZero Long id) {
         logger.info("Process delete request (delete employee by id={})", id);
         messageService.sendMessage("Delete employee with id: " + id);
         employeeService.deleteEmployeeById(id);
@@ -102,10 +107,10 @@ public class EmployeeController {
             response = Employee.class
     )
     @ApiResponses({
-            @ApiResponse(code = 400, message = "Bad Request"),
+            @ApiResponse(code = 400, message = "Employee Not Found To Update"),
             @ApiResponse(code = 500, message = "Internal Server Error")
     })
-    public Employee update(@RequestBody @Valid Employee employee, @PathVariable Long id) {
+    public Employee update(@RequestBody @Valid Employee employee, @PathVariable @Valid @PositiveOrZero Long id) {
         logger.info(
                 "Process update request (update employee with id={} by params: " +
                         "first_name={}, last_name={}, gender={}, department_id={}, job_title={}, date_of_birth={}",

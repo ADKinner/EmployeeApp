@@ -11,7 +11,9 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
+import javax.validation.ConstraintViolationException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,7 +27,7 @@ public class EmployeeControllerAdvice {
         Map<String, Object> body = new HashMap<>();
         logger.error(exception.getMessage());
         body.put("message", exception.getMessage());
-        if (exception.getMessage().contains("update")) {
+        if (exception.getMessage().contains("Update")) {
             return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
         } else {
             return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
@@ -53,6 +55,24 @@ public class EmployeeControllerAdvice {
         if (exception.getMessage().contains("LocalDate")) {
             body.put("dateOfBirth", "Such date format is invalid, right format is YYYY-MM-DD");
         }
+        return body;
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler({ConstraintViolationException.class})
+    public Map<String, Object> constraintViolationExceptionHandler(ConstraintViolationException exception) {
+        Map<String, Object> body = new HashMap<>();
+        logger.error(exception.getMessage());
+        body.put("message", "Bad Request");
+        return body;
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler({MethodArgumentTypeMismatchException.class})
+    public Map<String, Object> methodArgumentTypeMismatchExceptionHandler(MethodArgumentTypeMismatchException exception) {
+        Map<String, Object> body = new HashMap<>();
+        logger.error(exception.getMessage());
+        body.put("message", "Bad Request");
         return body;
     }
 
